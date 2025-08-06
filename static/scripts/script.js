@@ -1,8 +1,5 @@
 window.onload = function() {
-    const socket = io(window.location.origin, { 
-        transports: ['websocket'],  // Força usar WebSocket
-        upgrade: false
-    });
+    const socket = io('');
     console.log(username);
 
     function addToChat(msg) {
