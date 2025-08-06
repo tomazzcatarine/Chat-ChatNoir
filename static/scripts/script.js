@@ -1,78 +1,52 @@
-from flask import Flask, redirect, render_template, request,session,url_for
-from controllers.usuarios import Usuario
-from controllers.sql import Banco
-from flask_socketio import SocketIO, emit,send
-import sqlite3
+window.onload = function() {
+    const socket = io(window.location.origin, { 
+        transports: ['websocket'],  // Força usar WebSocket
+        upgrade: false
+    });
+    console.log(username);
 
-app = Flask(__name__)
-io = SocketIO(app, cors_allowed_origins="*")
+    function addToChat(msg) {
+        const span = document.createElement('span');
 
-app.secret_key = 'wjsn'
+        // Formata a data e hora
+        const now = new Date();
+        const hora = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const data = now.toLocaleDateString();
 
+        // Cria o conteúdo com a data/hora
+        span.innerHTML = `
+            <strong>${msg.user}</strong>: ${msg.message}
+            <div style="font-size: 0.75em; color: #bbb; margin-top: 6px; text-align: right;">
+                ${data} ${hora}
+            </div>
+        `;
 
-messages = []
+        const messagesDiv = document.getElementById('messages');
+        messagesDiv.appendChild(span);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 
-def conectar_bd():
-    return sqlite3.connect("models/banco.db")
+    socket.on('connect', () => {
+        socket.send("Usuário conectado");
+    });
 
-# Index ----------------------------------------------------
-@app.route('/')
-def index():
-    return render_template('index.html')
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
 
+        socket.emit('sendMessage', {
+            message: event.target[0].value,
+            user: username
+        });
+        event.target[0].value = '';
+    });
 
-# Cadastro --------------------------------------------------
-@app.route('/cadastro', methods=['GET', 'POST'])
-def cadastro():
-    if request.method == 'POST':
-        usuario = Usuario(request.form.get('usuario'), request.form.get('senha'))
-        try:
-            with conectar_bd() as con:
-                cur = con.cursor()
-                cur.execute("INSERT INTO tb_login (usuario, senha) VALUES (?, ?)", (usuario.usuario, usuario.senha))
-                con.commit()
-            return redirect(url_for("login"))
-        except sqlite3.IntegrityError:
-            return render_template("cadastro.html", erro="Usuário já existe!")
+    socket.on('getMessage', (msg) => {
+        addToChat(msg);
+    });
 
-    return render_template("cadastro.html")
-
-
-# Login -----------------------------------------------------
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        usuario = request.form.get('usuario')
-        senha = request.form.get('senha')
-
-        user = Usuario(usuario, senha)
-        
-        if user.login():
-            session['username'] = usuario
-            return redirect('/chat')
-        else:
-            return redirect('/login')
-    
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    return redirect('/')
-
-
-@app.route('/chat', methods=['POST', 'GET'])
-def home():
-    return render_template('chat.html')
-
-@io.on('sendMessage')
-def send_message_handler(msg):
-    messages.append(msg) 
-    emit('getMessage', msg, broadcast=True)
-
-@io.on('message')
-def message_handler(msg):
-    send(messages)
-
-if __name__ == '__main__':    
-    io.run(app, host="0.0.0.0", port=5000, debug=True)
+    socket.on('message', (msgs) => {
+        for (msg of msgs) {
+            addToChat(msg);
+        }
+    });
+}
