@@ -5,7 +5,7 @@ from flask_socketio import SocketIO, emit,send
 import sqlite3
 
 app = Flask(__name__)
-io = SocketIO(app)
+io = SocketIO(app, cors_allowed_origins="*")
 
 app.secret_key = 'wjsn'
 
@@ -76,4 +76,3 @@ def message_handler(msg):
 
 if __name__ == '__main__':    
     io.run(app, host="0.0.0.0", port=5000, debug=True)
-
