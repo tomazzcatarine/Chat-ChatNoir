@@ -5,7 +5,7 @@ from flask_socketio import SocketIO, emit,send
 import sqlite3
 
 app = Flask(__name__)
-io = SocketIO(app, cors_allowed_origins="*")
+io = SocketIO(app)
 
 app.secret_key = 'wjsn'
 
