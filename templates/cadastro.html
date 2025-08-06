@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/cadastro.css">
+    <link rel="shortcut icon" href="/static/assets/favicon_icon.png" type="image/x-icon">
+    <title>CatNoir | WebChat</title>
+</head>
+<body>
+
+    <img class="gato_preto" src="/static/assets/gato_principal.gif" width="170px" alt="">
+
+    <div class="tudo">
+        <h1>CADASTRO</h1>
+        <form action="/cadastro" method="POST">
+            <label for="usuario"></label>
+            <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário" required>
+        
+            <label for="senha"></label>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+
+            <button type="submit">Enviar</button>
+        </form>
+
+        <p><a href="/login">JÁ TEM LOGIN? LOGUE AQUI</a></p>
+
+    </div>
+
+    <div class="gato_braco">
+        <img src="/static/assets/gat_braco.png" width="450px"  alt="">
+    </div>
+
+    <div class="gato_jiji">
+        <img src="/static/assets/jiji.jpeg" width="400px" alt="">
+    </div>
+
+</body>
+</html>

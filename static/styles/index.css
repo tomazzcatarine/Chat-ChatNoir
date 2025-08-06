@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orelega+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root{
+    --fonte-1: 'Poppins';
+    --fonte-2: 'Orelega One'
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    background-color: black;
+    background-image: url(/static/assets/CHAT.png);
+}
+
+nav {
+    padding: 30px;
+    display: flex;
+    justify-content: right; /* Centraliza os itens no centro */
+    margin-right: 40px;
+    margin-top: 20px;
+    gap: 60px; /* Controle de espaçamento entre links */
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-family: var(--fonte-1);
+    font-weight: 400;
+    font-size: 20px;
+    position: relative; /* Define o contexto para o ::after */
+    transition: 0.5s ease-in-out;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px; /* Ajuste para alinhar a linha */
+    width: 0; /* Começa com a linha invisível */
+    height: 4px;
+    border-radius: 15px;
+    background-color: #f9e7b7;
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 80%; /* Linha se expande no hover */
+    color: #f9e7b7;
+}
+
+.logo{
+    width: 170px;
+    margin-top: -90px;
+    margin-left: 50px;
+}
+
+.inicio_foto{
+    display: flex;
+    justify-content: center;
+    margin-top: 75px;
+    margin-right: 1005px;
+}
+
+.tudo{
+    font-family: var(--fonte-2);
+    color: white;
+    margin-left: 900px;    
+    margin-top: -450px;
+    font-size: 30px;
+}
+
+.informacao{
+    font-family: var(--fonte-1);
+    font-weight: 300;
+    font-size: 16px;;
+    color: white;
+    margin-left: 900px;    
+    margin-top: 15px;
+}
+
+.e{
+    font-family: var(--fonte-1);
+    font-size: 28px;
+    color: white;
+    margin-left: 231px;    
+    margin-top: -76px;
+}
+
+.Fornecedores{
+    background-color: #81745c;
+    padding: 5px;
+    width: 378px;
+    border-radius: 3px 7px 8px 2px;
+    margin-top: -10px;
+    margin-right: 10px;
+    padding: 5px 10px;
+}
+
+.clientes{
+    background-color: #81745c;
+    width: 220px;
+    border-radius: 3px 3px 0px 0px;
+}
+
+.botoes{
+    margin-left: 900px;
+    margin-top: 30px;
+    transition: 2s;
+}
+
+.cadastro{
+    background-color: #f9e7b7;
+    padding: 13px 25px;
+    border-radius: 7px;
+    font-family: var(--fonte-1);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.64);
+    transition: 0.5s;
+}
+
+.login{
+    margin-left: 15px;
+    background-color: white;
+    padding: 13px 25px;
+    border-radius: 7px;
+    font-family: var(--fonte-1);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.64);
+    transition: 0.5s;
+}
+
+.login:hover, .cadastro:hover{
+    opacity: 0.5;
+}
+
+@media screen and (max-width: 600px) {
+    .inicio_foto img{
+        opacity: 0;
+        z-index: -1;
+    }
+
+    .logo{
+        width: 120px;
+        margin-top: 40px;
+        margin-left: 50px;
+    }
+
+    .tudo{
+        font-size: 20px;
+        margin-left: 50px;    
+        margin-top: -480px;
+    }
+
+    .e{
+        font-size: 18px;
+        position: relative;
+        top: 27px;
+        left: -70px;
+    }
+    
+    .Fornecedores{
+        margin-top: 20px;
+        width: 260px;
+    }
+
+    .botoes{
+        margin-left: 50px;
+        margin-top: -60px;
+    }
+}

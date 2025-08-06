@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatNoir | WebChat</title>
+    <link rel="stylesheet" href="/static/styles/chat.css">
+    <link rel="shortcut icon" href="/static/assets/favicon_icon.png" type="image/x-icon">
+</head>
+<body>
+
+    <div class="carregamento">
+        <div class="circulo"></div>
+        <p>Aguarde, suas mensagens estao sendo carregadas</p>
+    </div>
+
+    <div class="logout">
+        <a href="{{ url_for('logout')}} "><img class="img" src="/static/assets/logout.png"></a>
+        <a href="{{ url_for('logout') }}">Sair</a>
+     </div>
+
+     <img class="logo" src="/static/assets/logo_branca.png" alt=""> 
+
+     <div class="chat"> 
+        <div id="messages" class="chat-messages"></div>
+    </div> 
+    
+    
+    <div>
+        <form>
+            <input type="text" id="message" placeholder="Digite sua mensagem">
+            <button type="submit">
+                <img src="/static/assets/enviar.png" alt="">
+            </button>
+        </form>
+    </div>
+    
+    
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
+    
+    <script>
+        var username = "{{ session['username'] }}";
+    </script>
+
+    <script src="/static/scripts/script.js"></script>
+</body>
+</html>

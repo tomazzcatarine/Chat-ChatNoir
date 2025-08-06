@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Orelega+One&display=swap');
+
+:root{
+    --fonte-titulo: 'Orelega One';
+    --fonte-botao: 'Bree Serif';
+    --fonte-frase: 'Open Sans'
+}
+
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    background-color: white;
+}
+
+.caixa_preta{
+    background-color: black;
+    color: white;
+    text-align: center;
+    width: 450px;
+    height: 450px;
+    border-radius: 20px;
+    margin: auto;
+    margin-top: 160px;
+}
+
+.titulo{
+    color: white;
+    font-size: 30px;
+    top: 28%;
+    left: 44%;
+    position: absolute;
+    font-family: var(--fonte-titulo);
+}
+
+form{
+    top: 35%;
+    left: 40%;
+    position: absolute;
+}
+
+input{
+    background-color: black;
+    width: 280px;
+    height: 40px;
+    border: 2px solid white;
+    border-radius: 20px;
+    border-color: white;
+    text-align: center;
+    color: white;         
+    font-family: var(--fonte-botao);
+    margin-top: 50px;
+    display: flex;
+    margin-bottom: 50px;
+    margin-left: 10px;
+    transition: 0.5s;
+}
+
+input:focus{
+    outline: none;
+    border: 2px solid wheat;
+    background-color: black;
+    color: white;
+}
+
+button{
+    background-color: #f9e7b7;
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    border-radius: 20px;
+    margin-bottom: 13%;
+    border: none;
+    font-family: var(--fonte-botao);
+    margin-left: 10px;
+    border: 2px solid wheat;
+    transition: 0.5s ease-in-out;
+}
+
+button:hover{
+    background-color: black;
+    border: 2px solid wheat;
+    cursor: pointer;
+    color: wheat;
+}
+
+.frase{
+    font-size: 12px;
+    bottom: 21%;
+    left: 44.2%;
+    position: absolute;
+    font-family: var(--fonte-frase);
+    text-decoration: none;
+    color: #e5e5e5;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.frase:hover{
+    text-decoration: wavy underline;
+    text-decoration-color: #f9e7b7;
+}
+
+.gato_preto{
+    position: absolute;
+    bottom: 76%;
+    left: 45.3%;
+}
+
+.pata{
+    position: absolute;
+    bottom: 28%;
+    left: 78%;
+}
+
+.pata_dois{
+    position: absolute;
+    bottom: 45%;
+    left: 75%;
+}
+
+.pata_tres{
+    position: absolute;
+    bottom: 15%;
+    left: 73%;
+}
+
+.estrela{
+    position: absolute;
+    bottom: 70%;
+    left: 20%;
+}
+
+.olho_fechado{
+    position: absolute;
+    bottom: 1%;
+}
+
+@media (max-width: 600px){
+    body{
+        overflow: hidden;
+    }
+
+    .caixa_preta{
+        max-width: 350px;
+        max-height: 400px;
+        align-items: center;
+    }
+
+    .titulo{
+        font-size: 23px;
+        position: absolute;
+        top: 26%;
+        left: 33%;
+    }
+
+    form{
+        top: 35%;
+        left: 15%;
+        position: absolute;
+    }
+
+    .frase{
+        position: absolute;
+        bottom: 19%;
+        left: 29%;
+    }
+
+    .estrela img{
+        width: 25%;
+        position: fixed;
+        top: 10px;
+        left: 5px;
+    }
+
+    .gato_preto{
+        position: fixed;
+        bottom: 75%;
+        left: 31%;
+    }
+
+    .olho_fechado img{
+        width: 35%;
+        position: fixed;
+        bottom: 3%;
+    }
+
+    .pata img{
+        width: 15%;
+        position: fixed;
+        left: 85%;
+        bottom: 0.5%;
+    }
+    
+    .pata_dois img{
+        width: 15%;
+        position: fixed;
+        left: 75%;
+        bottom: 4%;
+    }
+
+    .pata_tres img{
+        width: 15%;
+        position: fixed;
+        left: 80%;
+        bottom: 8%;
+    }
+}
