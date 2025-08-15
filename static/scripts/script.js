@@ -1,49 +1,54 @@
-window.onload = function() {
-    const socket = io('');
-    console.log(username);
+    // Pega o username da sessão do Flask
+    const username = "{{ session['username'] }}";
 
-    function addToChat(msg) {
-        const span = document.createElement('span');
+    window.onload = function() {
+        const socket = io(); // conecta com o servidor
 
-        // Formata a data e hora
-        const now = new Date();
-        const hora = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        const data = now.toLocaleDateString();
+        // Função para adicionar mensagem no chat
+        function addToChat(msg) {
+            const span = document.createElement('span');
 
-        // Cria o conteúdo com a data/hora
-        span.innerHTML = `
-            <strong>${msg.user}</strong>: ${msg.message}
-            <div style="font-size: 0.75em; color: #bbb; margin-top: 6px; text-align: right;">
-                ${data} ${hora}
-            </div>
-        `;
+            // Data e hora
+            const now = new Date();
+            const hora = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const data = now.toLocaleDateString();
 
-        const messagesDiv = document.getElementById('messages');
-        messagesDiv.appendChild(span);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
+            span.innerHTML = `
+                <strong>${msg.user}</strong>: ${msg.message}
+                <div style="font-size: 0.75em; color: #bbb; margin-top: 6px; text-align: right;">
+                    ${data} ${hora}
+                </div>
+            `;
 
-    socket.on('connect', () => {
-        socket.send("Usuário conectado");
-    });
-
-    document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        socket.emit('sendMessage', {
-            message: event.target[0].value,
-            user: username
-        });
-        event.target[0].value = '';
-    });
-
-    socket.on('getMessage', (msg) => {
-        addToChat(msg);
-    });
-
-    socket.on('message', (msgs) => {
-        for (msg of msgs) {
-            addToChat(msg);
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.appendChild(span);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
-    });
-}
+
+        // Enviar mensagem ao apertar "Enter" no form
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const messageInput = event.target[0].value;
+            if (messageInput.trim() === "") return; // não envia vazio
+
+            // Emite para o servidor
+            socket.emit('sendMessage', {
+                message: messageInput,
+                user: username
+            });
+
+            event.target[0].value = ''; // limpa input
+        });
+
+        // Recebe mensagem do servidor
+        socket.on('getMessage', (msg) => {
+            addToChat(msg);
+        });
+
+        // Opcional: mostrar quando alguém entra
+        socket.emit('sendMessage', {
+            user: username,
+            message: "entrou no chat!"
+        });
+    }
