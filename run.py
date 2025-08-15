@@ -1,27 +1,28 @@
-from flask import Flask, redirect, render_template, request,session,url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 from controllers.usuarios import Usuario
-from controllers.sql import Banco
-from flask_socketio import SocketIO, emit,send
 import sqlite3
+from flask_socketio import SocketIO, emit
 
+# Inicialização do app
 app = Flask(__name__)
+app.secret_key = 'wjsn'
 io = SocketIO(app)
 
-app.secret_key = 'wjsn'
-
-
+# Lista de mensagens
 messages = []
 
+# Função para conectar ao banco
 def conectar_bd():
     return sqlite3.connect("models/banco.db")
 
-# Index ----------------------------------------------------
+# ------------------- ROTAS -------------------
+
+# Index
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
-# Cadastro --------------------------------------------------
+# Cadastro
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
@@ -29,50 +30,50 @@ def cadastro():
         try:
             with conectar_bd() as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO tb_login (usuario, senha) VALUES (?, ?)", (usuario.usuario, usuario.senha))
+                cur.execute(
+                    "INSERT INTO tb_login (usuario, senha) VALUES (?, ?)", 
+                    (usuario.usuario, usuario.senha)
+                )
                 con.commit()
             return redirect(url_for("login"))
         except sqlite3.IntegrityError:
             return render_template("cadastro.html", erro="Usuário já existe!")
-
     return render_template("cadastro.html")
 
-
-# Login -----------------------------------------------------
+# Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         usuario = request.form.get('usuario')
         senha = request.form.get('senha')
-
         user = Usuario(usuario, senha)
-        
         if user.login():
             session['username'] = usuario
             return redirect('/chat')
         else:
             return redirect('/login')
-    
     return render_template('login.html')
 
+# Logout
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect('/')
 
-
-@app.route('/chat', methods=['POST', 'GET'])
-def home():
+# Chat
+@app.route('/chat', methods=['GET'])
+def chat():
     if 'username' not in session:
         return redirect(url_for('login'))
     return render_template('chat.html', username=session['username'])
 
+# ------------------- SOCKETIO -------------------
 
 @io.on('sendMessage')
-def send_message_handler(msg):
-    messages.append(msg) 
+def handle_send_message(msg):
+    messages.append(msg)
     emit('getMessage', msg, broadcast=True)
 
-if __name__ == '__main__':    
-    io.run(app, host="0.0.0.0", port=5000, debug=True)
-
+# ------------------- RUN -------------------
+if __name__ == '__main__':
+    io.run(app, host='0.0.0.0', port=5000, debug=True)
