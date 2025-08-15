@@ -2,27 +2,27 @@ from flask import Flask, redirect, render_template, request, session, url_for
 from controllers.usuarios import Usuario
 import sqlite3
 from flask_socketio import SocketIO, emit
+import eventlet
+
+eventlet.monkey_patch()  # necessário para o socket funcionar direito
 
 # Inicialização do app
 app = Flask(__name__)
 app.secret_key = 'wjsn'
-io = SocketIO(app)
+io = SocketIO(app, async_mode='eventlet')
 
 # Lista de mensagens
 messages = []
 
-# Função para conectar ao banco
 def conectar_bd():
     return sqlite3.connect("models/banco.db")
 
 # ------------------- ROTAS -------------------
 
-# Index
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Cadastro
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
@@ -40,7 +40,6 @@ def cadastro():
             return render_template("cadastro.html", erro="Usuário já existe!")
     return render_template("cadastro.html")
 
-# Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -54,13 +53,11 @@ def login():
             return redirect('/login')
     return render_template('login.html')
 
-# Logout
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect('/')
 
-# Chat
 @app.route('/chat', methods=['GET'])
 def chat():
     if 'username' not in session:
